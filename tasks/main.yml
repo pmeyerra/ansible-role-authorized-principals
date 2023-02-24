@@ -1,0 +1,22 @@
+---
+# tasks file for ansible-role-authorized-principals
+- name: Create authorized principals directory
+  ansible.builtin.file:
+    path: "{{ authorized_principals_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create authorized principals file
+  ansible.builtin.copy:
+    dest: "{{ authorized_principals_dir }}/{{ user.key }}"
+    owner: root
+    group: root
+    mode: '0644'
+    content: "{{ principals }}"
+  loop: "{{ authorized_principals | dict2items }}"
+  loop_control:
+    loop_var: user
+  vars:
+    principals: "{{ user.value | join('\n') }}"

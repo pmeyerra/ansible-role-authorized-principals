@@ -1,0 +1,60 @@
+---
+name: Continuous Integration
+
+'on':
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    working-directory: pmeyerra.authorized_principals
+
+jobs:
+  lint:
+    name: Lint role
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: pmeyerra.authorized_principals
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install lint dependencies
+        run: pip install yamllint ansible-lint
+
+      - name: Run yamllint
+        run: |
+          yamllint .
+
+      - name: Run ansible-lint
+        run: |
+          ansible-lint .
+
+  test:
+    name: Test role using Molecule
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: pmeyerra.authorized_principals
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install test dependencies.
+        run: pip install ansible molecule[docker] docker pytest-testinfra
+
+      - name: Run Molecule tests
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'

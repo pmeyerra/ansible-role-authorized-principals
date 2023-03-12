@@ -1,0 +1,3 @@
+---
+# defaults file for ansible-role-authorized-principals
+authorized_principals_dir: /etc/ssh/auth_principals

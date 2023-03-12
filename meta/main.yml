@@ -1,0 +1,22 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: authorized_principals
+  author: pmeyerra
+  description: Manage authorized principals files.
+
+  license: MIT
+
+  min_ansible_version: '2.1'
+
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+        - jammy
+
+  galaxy_tags:
+    - ssh
+    - principals
